@@ -4,7 +4,7 @@ const {getMarcas, addMarca, updateMarca, deleteMarca, getMarcaPorCodigo } = requ
 
 const { getModelo, addModelo, updateModelo, deleteModelo, getModeloPorCodigo} = require('../controllers/modelosController')
 
-const { getCarros, addCarro, updateCarro, deleteCarro, getCarroPorCodigo} = require('../controllers/carrosController')
+const { getCarroPorModelo, addCarro, updateCarro, deleteCarro, getCarroPorCodigo} = require('../controllers/carrosController')
 
 const { login, verificaJWT } = require('../controllers/segurancaController')
 
@@ -28,8 +28,10 @@ rotas.route('/modelos/:codigo')
      .get(verificaJWT, getModeloPorCodigo)
      .delete(verificaJWT,deleteModelo);
 //Carros
+rotas.route('/carros/modelo/:codigomodelo')
+     .get(verificaJWT, getCarroPorModelo)
+
 rotas.route('/carros')
-     .get(verificaJWT, getCarros)
      .post(verificaJWT, addCarro)
      .put(verificaJWT, updateCarro);
 

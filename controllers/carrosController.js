@@ -1,16 +1,16 @@
-const { getCarrosDB, addCarroDB, updateCarroDB, 
+const { getCarrosPorModeloDB, addCarroDB, updateCarroDB, 
     deleteCarroDB, getCarroPorCodigoDB } = require('../useCases/carroUseCases');
   
-  const getCarros = async (request, response) => {
-      await getCarrosDB()
-            .then(data => response.status(200).json(data))
-            .catch(err => {
-              response.status(400).json({
-                  status : 'error',
-                  message : 'Erro ao consultar as carros: ' + err
-              })
-            })
-  }
+    const getCarroPorModelo = async (request, response) => {
+      await getCarrosPorModeloDB(request.params.codigomodelo)
+        .then(data => response.status(200).json(data))
+        .catch(err => {
+          response.status(400).json({
+            status: 'error',
+            message: 'Erro ao consultar os carros do modelo: ' + err
+          })
+        })
+    }
   
   const addCarro = async (request, response) => {
       await addCarroDB(request.body)
@@ -52,5 +52,5 @@ const { getCarrosDB, addCarroDB, updateCarroDB,
             }))
   }
   
-  module.exports = { getCarros, addCarro, 
+  module.exports = { getCarroPorModelo, addCarro, 
     updateCarro, deleteCarro, getCarroPorCodigo }

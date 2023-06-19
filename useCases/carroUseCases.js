@@ -1,12 +1,19 @@
 const { pool } = require('../config');
 const Carro = require('../entities/carros');
 
-const getCarrosDB = async () => {
+const getCarrosPorModeloDB = async (codigomodelo) => {
     try {
-        const { rows } = await 
-        pool.query('SELECT * FROM carros ORDER BY codigo');
-        return rows.map((carro) => new Carro(carro.codigo, carro.placa, carro.disponivel, carro.km ,carro.modelo));
-    } catch(err){
+        const results = await
+            pool.query(`SELECT * FROM carros WHERE modelo = $1 
+        ORDER BY codigo`, [codigomodelo]);
+        if (results.rowCount === 0) {
+            throw `Nenhum carro encontrado com o código de 
+            modelo: ${codigomodelo}`;
+        } else {
+            return results.rows.map((carro) =>
+                new Carro(carro.codigo, carro.placa, carro.disponivel, carro.km ,carro.modelo));
+        }
+    } catch (err) {
         throw "Erro: " + err;
     }
 }
@@ -72,5 +79,5 @@ const getCarroPorCodigoDB = async (codigo) => {
     }
 }
 
-module.exports = { getCarrosDB, addCarroDB, 
+module.exports = { getCarrosPorModeloDB, addCarroDB, 
     updateCarroDB, deleteCarroDB, getCarroPorCodigoDB }
